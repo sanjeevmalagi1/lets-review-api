@@ -15,15 +15,20 @@ defmodule LetsReviewWeb.Router do
   end
 
   scope "/", LetsReviewWeb do
+    pipe_through :api
+
+    scope "/api", API do
+      scope "/v1", V1 do
+        get "/user", UserController, :get
+      end
+    end
+  end
+
+  scope "/", LetsReviewWeb do
     pipe_through :browser
 
     get "/", PageController, :home
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", LetsReviewWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:lets_review, :dev_routes) do
